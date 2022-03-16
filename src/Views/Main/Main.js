@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { fetchCountries } from '../../services/countrys';
+import RenderCountries from '../../components/RenderCountries/RenderCountries';
+import { fetchCountries } from '../../services/countries';
 
 export default function Main() {
   const [countries, setCountries] = useState([]);
@@ -11,7 +12,15 @@ export default function Main() {
     fetchData();
   }, []);
 
-  return <div>test</div>;
+  return (
+    <div>
+      <div>
+        {countries.map((country) => (
+          <RenderCountries key={country.id} name={country.name} iso2={country.iso2} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // for the flags/use id as key is = countries.id
