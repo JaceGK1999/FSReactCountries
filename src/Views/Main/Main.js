@@ -1,21 +1,43 @@
 import React, { useState, useEffect } from 'react';
+import ContinentsDD from '../../components/Dropdown/ContinentsDD';
 import RenderCountries from '../../components/RenderCountries/RenderCountries';
 import { fetchCountries } from '../../services/countries';
 
 export default function Main() {
   const [countries, setCountries] = useState([]);
+  const [continent, setContinent] = useState('all');
+  const [loading, setLoading] = useState(true);
+
+  const continents = [
+    'all',
+    'Africa',
+    'Asia',
+    'Europe',
+    'North America',
+    'South America',
+    'Oceania',
+  ];
   useEffect(() => {
     const fetchData = async () => {
       const resp = await fetchCountries();
       setCountries(resp);
+
+      setLoading(false);
     };
     fetchData();
   }, []);
 
+  const filterContinent = () => {
+    return countries.filter((country) => country.continent === continent || continent === 'all');
+  };
+
+  if (loading) return <p>Loading!!!</p>;
+
   return (
     <div>
       <div>
-        {countries.map((country) => (
+        <ContinentsDD continents={continents} callback={setContinent} />
+        {filterContinent().map((country) => (
           <RenderCountries key={country.id} name={country.name} iso2={country.iso2} />
         ))}
       </div>
