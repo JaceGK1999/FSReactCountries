@@ -20,8 +20,11 @@ export default function Main() {
   useEffect(() => {
     const fetchData = async () => {
       const resp = await fetchCountries();
-      setCountries(resp);
-
+      try {
+        setCountries(resp);
+      } catch (e) {
+        alert(e.message);
+      }
       setLoading(false);
     };
     fetchData();
